@@ -2,12 +2,15 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
 from prueba.controller import AdminPatientsController
 # Create your views here.
 class AdminPatientsView(APIView):
-    def get(self, request):
+    @permission_classes([AllowAny])
+    def get(self, request, offset,limit):
         try:
-            patient = AdminPatientsController.get_all()
+            patient = AdminPatientsController.get_all(offset, limit)
             return Response(patient)
         except Exception as e:
             return Response({'mensaje': f'Ha ocurrido un error {e}'}, status= status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -15,11 +18,11 @@ class AdminPatientsView(APIView):
     def post(self, request, format=None):
         try:
             patient = AdminPatientsController.save_patient(request.data)
-            if hasattr(patient, "errors") and persona.errors:
+            if hasattr(patient, "errors") and patient.errors:
                 return Response(patient.errors, status = status.HTTP_400_BAD_REQUEST)
             return Response(patient.data, status = status.HTTP_201_CREATED)
         except Exception as e:
-             return Response({'mensaje': f'Ha ocurrido un error {e}'}, status= status.HTTP_500_INTERNAL_SERVER_ERROR)
+             return Response({'mensaje': f'Ha ocurrido un error {e.args}'}, status= status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class AdminPatientsViewDetail(APIView):
     def get(self, request, pk):

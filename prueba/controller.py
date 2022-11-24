@@ -2,8 +2,8 @@ from prueba.manager import AdminPatientsManager
 from prueba.serializer import AdminPatientsSerializer
 class AdminPatientsController():
     @staticmethod
-    def get_all():
-        return AdminPatientsManager.get_all()
+    def get_all(offset, limit):
+        return AdminPatientsManager.get_all(offset, limit)
 
     @staticmethod
     def save_patient(data):

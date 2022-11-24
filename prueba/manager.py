@@ -2,15 +2,15 @@ from prueba.models import Patient
 from prueba.serializer import AdminPatientsSerializer
 class AdminPatientsManager():
     @staticmethod
-    def get_all():
-        patients = Patient.objects.all()
+    def get_all(offset, limit):
+        patients = Patient.objects.all()[limit:offset]
         serializer = AdminPatientsSerializer(patients, many=True)
         return serializer.data
 
     @staticmethod
     def save_patient(serializer):
         try:
-            persona = serializer.save()
+            patient = serializer.save()
         except Exception as e:
             raise
 

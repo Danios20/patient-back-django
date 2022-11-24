@@ -19,5 +19,6 @@ from prueba.views import AdminPatientsView, AdminPatientsViewDetail
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'patients', AdminPatientsView.as_view()),
-    path(r'patient/<int:pk>', AdminPatientsViewDetail.as_view())
+    path(r'patients/<int:limit>/<int:offset>', AdminPatientsView.as_view()),
+    path(r'patients/<int:pk>', AdminPatientsViewDetail.as_view())
 ]
